@@ -13,9 +13,11 @@ const App = () => {
   
   const nextAnedcoteText = "Next anecdote"
   const voteAnecdoteText = "Vote"
+  
    
   const [selected, setSelected] = useState(0)
   const[allVotes, setVotes] = useState(new Uint8Array(anecdotes.length))
+  const[mostPopular, setMostPopular] = useState(-1)
 
   const showNewAnecdote = () => {
     let random = Math.floor(Math.random() * anecdotes.length)
@@ -26,19 +28,28 @@ const App = () => {
     const copy = [...allVotes]
     copy[selected] +=1
     setVotes(copy)
-    console.log('kaikkivotes',allVotes)
-    console.log('kopio', copy)
+
+    const max = Math.max(...copy)
+    console.log(max)
+    const index = copy.indexOf(max)
+    console.log('indekxi',index)
+    setMostPopular(index)
+    
   }
 
+  
   return (
     <div>
       {anecdotes[selected]}
       <Button  text = {nextAnedcoteText} handleClick = {showNewAnecdote}/>
+      <p>Shown anecdote has {allVotes[selected]} votes</p>
       <Button text = {voteAnecdoteText} handleClick = {voteAnecdote}/>
-      <p>{allVotes}</p>
+      <h2>Anecdote with most votes</h2>
+      <p>{anecdotes[mostPopular]}</p>
     </div>
   )
 }
+
 const Button = (props) => {
   return(
     <div>
